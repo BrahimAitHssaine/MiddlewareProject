@@ -32,7 +32,7 @@ public class SujetDiscussion  implements InterfaceSujetDiscussion {
 	}
 
 	@Override
-	public void diffuse(String message) throws RemoteException {
+	public synchronized void diffuse(String message) throws RemoteException {
 		// TODO Auto-generated method stub
 		for(InterfaceAffichageClient c : client){
 			
