@@ -28,7 +28,8 @@ public class SujetDiscussion  implements InterfaceSujetDiscussion {
 	public void desInscription(InterfaceAffichageClient c)
 			throws RemoteException {
 		// TODO Auto-generated method stub
-		this.getClient().remove(c);
+		if(this.getClient().remove(c)) System.out.println("#La désinscription s'est effectuée avec succès.");
+		else System.out.println("!La désinscription n'a pas abouti.");
 	}
 
 	@Override
