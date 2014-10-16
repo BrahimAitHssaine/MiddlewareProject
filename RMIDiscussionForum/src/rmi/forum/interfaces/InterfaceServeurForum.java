@@ -1,4 +1,4 @@
-package rmi.forum.utils;
+package rmi.forum.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
