@@ -1,6 +1,5 @@
 package rmi.forum.core;
 
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -41,6 +40,9 @@ public class ServeurForum implements InterfaceServeurForum {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+		if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }
 		try {
 
 			Registry reg =  LocateRegistry.getRegistry();
