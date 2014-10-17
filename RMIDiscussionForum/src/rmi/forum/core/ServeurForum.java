@@ -3,6 +3,7 @@ package rmi.forum.core;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Map;
@@ -10,12 +11,11 @@ import java.util.Map;
 import rmi.forum.interfaces.InterfaceServeurForum;
 import rmi.forum.interfaces.InterfaceSujetDiscussion;
 
-public class ServeurForum extends UnicastRemoteObject implements InterfaceServeurForum {
+public class ServeurForum implements InterfaceServeurForum {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private final String musique = "Musique";
 	private final String cinema = "Cinema";
 	private final String sport = "Sport";
@@ -43,16 +43,20 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 		
 		try {
 
-			LocateRegistry.createRegistry(8090);
-
+			Registry reg =  LocateRegistry.getRegistry();
+			
 			ServeurForum serveurF = new ServeurForum();
-
-			Naming.bind("//localhost/serveurForum",serveurF);
+			
+			InterfaceServeurForum stub = (InterfaceServeurForum) UnicastRemoteObject.exportObject(serveurF, 0);
+			
+			reg.rebind("//Server",stub);
 			
 			System.out.println("#Initialisation du site serveur et enregistrement de son adresse externe.");
 			
 			}
-			catch(Exception e) {System.out.println("!L'initialisation du site serveur et l'enregistrement de son adresse externe ont échoué.");}
+			catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("!L'initialisation du site serveur et l'enregistrement de son adresse externe ont échoué.");}
 		
 	}
 
