@@ -47,7 +47,7 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 
 			ServeurForum serveurF = new ServeurForum();
 
-			Naming.bind("//ADRESSE_EXTERNE",serveurF);
+			Naming.bind("//localhost/serveurForum",serveurF);
 			
 			System.out.println("#Initialisation du site serveur et enregistrement de son adresse externe.");
 			
