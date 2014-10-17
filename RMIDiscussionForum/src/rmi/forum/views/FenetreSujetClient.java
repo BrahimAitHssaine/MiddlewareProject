@@ -11,9 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.sun.xml.internal.rngom.xml.util.Naming;
-
-import rmi.forum.interfaces.InterfaceAffichageClient;
 import rmi.forum.interfaces.InterfaceServeurForum;
 import rmi.forum.interfaces.InterfaceSujetDiscussion;
 
