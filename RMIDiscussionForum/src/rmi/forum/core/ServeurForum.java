@@ -1,6 +1,8 @@
 package rmi.forum.core;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Map;
@@ -35,5 +37,24 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 		catch (NullPointerException e) {return null;}
 		
 	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		try {
+
+			LocateRegistry.createRegistry(8090);
+
+			ServeurForum serveurF = new ServeurForum();
+
+			Naming.bind("//ADRESSE_EXTERNE",serveurF);
+			
+			System.out.println("#Initialisation du site serveur et enregistrement de son adresse externe.");
+			
+			}
+			catch(Exception e) {System.out.println("!L'initialisation du site serveur et l'enregistrement de son adresse externe ont échoué.");}
+		
+	}
+
 
 }
