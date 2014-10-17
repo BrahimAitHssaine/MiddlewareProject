@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.sun.xml.internal.rngom.xml.util.Naming;
+
 import rmi.forum.interfaces.InterfaceAffichageClient;
 import rmi.forum.interfaces.InterfaceServeurForum;
 import rmi.forum.interfaces.InterfaceSujetDiscussion;
@@ -103,18 +105,17 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient{
 	public static void main(String[] args) {
 		// TODO 1. Instancier une JFrame
 		FenetreSujetClient maFenetre2 = new FenetreSujetClient();
-		// TODO 7. Afficher la JFrame
 		maFenetre2.add(maPanel);
 		maFenetre2.setVisible(true);
 		
+		InterfaceServeurForum serverforum;
 		if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
-        }
         try {
-            String name = "Server";
-            Registry registry = LocateRegistry.getRegistry(args[0]);
-            InterfaceServeurForum serverforum = (InterfaceServeurForum) registry.lookup(name);
-          
+        	 String name = "Server";
+        	 Registry registry = LocateRegistry.getRegistry(args[0]);
+             serverforum = (InterfaceServeurForum) registry.lookup(name);
+             
         } catch (Exception e) {
             System.err.println("Connect Server exception:");
             e.printStackTrace();
@@ -122,12 +123,13 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient{
 		
 	}
 
-
-	
-	
-
-	
+	}
 }
+	
+	
+
+	
+
 
 	
 	
