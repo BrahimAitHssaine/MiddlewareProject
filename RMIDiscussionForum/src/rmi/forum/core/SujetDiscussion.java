@@ -9,12 +9,11 @@ import rmi.forum.interfaces.InterfaceSujetDiscussion;
 
 public class SujetDiscussion  implements InterfaceSujetDiscussion {
 
-	private List<InterfaceAffichageClient> client;
+	private List<InterfaceAffichageClient> client = new LinkedList<InterfaceAffichageClient>();
 	private String name;
 	
 	public SujetDiscussion(String name) {
 		// TODO Auto-generated constructor stub
-		this.setClient(new LinkedList<InterfaceAffichageClient>());
 		this.setName(name);  
 	}
 
