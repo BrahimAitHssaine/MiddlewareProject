@@ -80,9 +80,9 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient{
 			throws RemoteException {
 		// TODO Auto-generated method stub
 		String sujet = null;
-		boolean abonné=false;
+		boolean abonne=false;
 		FenetreDiscussionClient f  = new FenetreDiscussionClient(sujet);;
-		if(abonné==false)
+		if(abonne==false)
 		{
 			 f.setVisible(true);
 			sujetDiscussion.inscription(f);
@@ -94,7 +94,7 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient{
 			//fermer la fenetre .
 		}
 		
-		return abonné;
+		return abonne;
 	
 	}
 
