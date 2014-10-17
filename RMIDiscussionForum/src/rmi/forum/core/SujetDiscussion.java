@@ -18,13 +18,13 @@ public class SujetDiscussion  implements InterfaceSujetDiscussion {
 	}
 
 	@Override
-	public void inscription(InterfaceAffichageClient c) throws RemoteException {
+	public synchronized void inscription(InterfaceAffichageClient c) throws RemoteException {
 		// TODO Auto-generated method stub
 		this.getClient().add(c);
 	}
 
 	@Override
-	public void desInscription(InterfaceAffichageClient c)
+	public synchronized void desInscription(InterfaceAffichageClient c)
 			throws RemoteException {
 		// TODO Auto-generated method stub
 		if(this.getClient().remove(c)) System.out.println("#La désinscription s'est effectuée avec succès.");
