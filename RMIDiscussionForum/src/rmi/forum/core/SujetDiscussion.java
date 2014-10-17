@@ -56,12 +56,7 @@ public class SujetDiscussion  implements InterfaceSujetDiscussion {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	@Override
-	public boolean estAbonner(InterfaceAffichageClient c)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
+	
 
 }
