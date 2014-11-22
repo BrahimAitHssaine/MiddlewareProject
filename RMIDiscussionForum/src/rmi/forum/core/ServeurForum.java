@@ -1,5 +1,6 @@
 package rmi.forum.core;
 
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -40,19 +41,13 @@ public class ServeurForum implements InterfaceServeurForum {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+	
 		try {
-
-			Registry reg =  LocateRegistry.getRegistry();
 			
-			ServeurForum serveurF = new ServeurForum();
-			
-			InterfaceServeurForum stub = (InterfaceServeurForum) UnicastRemoteObject.exportObject(serveurF, 0);
-			
-			reg.rebind("//Server",stub);
-			
+			ServeurForum pierre = new ServeurForum();
+			InterfaceServeurForum stu = (InterfaceServeurForum) UnicastRemoteObject.exportObject(pierre, 0);
+			Registry registry = java.rmi.registry.LocateRegistry.createRegistry(5000);
+			registry.rebind("cyrille", stu);
 			System.out.println("#Initialisation du site serveur et enregistrement de son adresse externe.");
 			
 			}

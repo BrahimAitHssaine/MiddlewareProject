@@ -106,20 +106,19 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient{
 		maFenetre2.setVisible(true);
 		
 		InterfaceServeurForum serverforum;
-		if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
+	
         try {
-        	 String name = "Server";
-        	 Registry registry = LocateRegistry.getRegistry(args[0]);
+        	 String name = "cyrille";
+        	 Registry registry = LocateRegistry.getRegistry(5000);
              serverforum = (InterfaceServeurForum) registry.lookup(name);
+             System.out.println("Serveur trouvé");         
              
         } catch (Exception e) {
             System.err.println("Connect Server exception:");
+            System.out.println("pierre exception");
             e.printStackTrace();
         }
 		
-	}
-
 	}
 }
 	
