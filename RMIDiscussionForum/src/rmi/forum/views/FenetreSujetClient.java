@@ -14,119 +14,119 @@ import javax.swing.JPanel;
 import rmi.forum.interfaces.InterfaceServeurForum;
 import rmi.forum.interfaces.InterfaceSujetDiscussion;
 
-
-
-public class FenetreSujetClient extends JFrame implements InterfaceClient{
+public class FenetreSujetClient extends JFrame implements InterfaceClient {
 
 	/**
 	 * 
 	 */
-	
+
 	private static final long serialVersionUID = 1L;
 	private static JPanel maPanel = new JPanel();
 	private InterfaceSujetDiscussion sujetDiscussion;
-	public FenetreSujetClient(String title) throws HeadlessException {
-		
-	}
-	
-	public FenetreSujetClient() {
+	private boolean abonne = false;
+	FenetreDiscussionClient f ;
+	static InterfaceServeurForum serverforum;
+
+	/**
+	 * @throws HeadlessException
+	 */
+	public FenetreSujetClient() throws HeadlessException {
 		super();
 		setTitle("FenetreSujetClient ");
 		setSize(400, 300);
-		setResizable(false);				
+
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		
-		JButton Button1 = new JButton("Sport");//The JButton name.
+
+		JButton Button1 = new JButton("Sport");// The JButton name.
 		maPanel.add(Button1);
-		JButton Button2 = new JButton("Musique");//The JButton name.
+		JButton Button2 = new JButton("Musique");// The JButton name.
 		maPanel.add(Button2);
-		JButton Button3 = new JButton("Cinema");//The JButton name.
+		JButton Button3 = new JButton("Cinema");// The JButton name.
 		maPanel.add(Button3);
-		
-		Button1.addActionListener(new action("Sport")) ;
-		Button2.addActionListener(new action("Musique")) ;
-		Button3.addActionListener(new action("Cinema")) ;
+
+		Button1.addActionListener(new action("Sport"));
+		Button2.addActionListener(new action("Musique"));
+		Button3.addActionListener(new action("Cinema"));
 
 	}
-	
-	class action implements ActionListener
-	{
-		
-		String sujet;
-		
-		public action(String s)
-		{
-			sujet=s;
-			System.out.println("je suis le sujet "+ sujet );
+
+	class action implements ActionListener {
+
+		String sujet ;
+
+		public action(String s) {
+			sujet = s;
+			System.out.println("je suis le sujet " + sujet);
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent v) {
 			// TODO Auto-generated method stub
+			
 			try {
-				if(estAbonner(sujet))
+				if (estAbonner(v.getActionCommand())){
 					System.out.println("je suis abonnee a ce sujet");
+				}
+				else
+					System.out.println("je suis plus abonnee a ce sujet");
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
+
 	@Override
-	public boolean estAbonner(String c)
-			throws RemoteException {
+	public boolean estAbonner(String c) throws RemoteException {
 		// TODO Auto-generated method stub
-		String sujet = null;
-		boolean abonne=false;
-		FenetreDiscussionClient f  = new FenetreDiscussionClient(sujet);;
-		if(abonne==false)
-		{
-			 f.setVisible(true);
-			sujetDiscussion.inscription(f);
-			
-		}
-		else
-		{
-			sujetDiscussion.desInscription(f);
-			//fermer la fenetre .
-		}
+		String sujet = c;
 		
+		if (abonne == false) {
+			sujetDiscussion = serverforum.obtientSujet(sujet);
+			f = new FenetreDiscussionClient(sujet, sujetDiscussion);
+			f.setVisible(true);
+			try{
+				sujetDiscussion.inscription(f);
+			}catch(Exception e){
+				System.out.println("Erreur");
+			}
+			abonne = true;
+		} 
+		else {
+			abonne = false;
+			try{
+				sujetDiscussion.desInscription(f);			
+			}catch(Exception e){
+				System.out.println("Erreur");
+			}
+			f.setVisible(false);
+			// fermer la fenetre .
+		}
+
 		return abonne;
-	
+
 	}
 
-
-	
 	public static void main(String[] args) {
 		// TODO 1. Instancier une JFrame
 		FenetreSujetClient maFenetre2 = new FenetreSujetClient();
 		maFenetre2.add(maPanel);
 		maFenetre2.setVisible(true);
+
 		
-		InterfaceServeurForum serverforum;
-	
-        try {
-        	 String name = "cyrille";
-        	 Registry registry = LocateRegistry.getRegistry(5000);
-             serverforum = (InterfaceServeurForum) registry.lookup(name);
-             System.out.println("Serveur trouvé");         
-             
-        } catch (Exception e) {
-            System.err.println("Connect Server exception:");
-            System.out.println("pierre exception");
-            e.printStackTrace();
-        }
-		
+
+		try {
+			String name = "serveur";
+			Registry registry = LocateRegistry.getRegistry(5000);
+			serverforum = (InterfaceServeurForum) registry.lookup(name);
+			System.out.println("Serveur trouvé");
+		} catch (Exception e) {
+			System.err.println("Connect Server exception:");
+			e.printStackTrace();
+		}
+
 	}
 }
-	
-	
-
-	
-
-
-	
-	
-

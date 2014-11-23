@@ -1,6 +1,6 @@
 package rmi.forum.core;
 
-import java.rmi.Naming;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -11,8 +11,12 @@ import java.util.Map;
 import rmi.forum.interfaces.InterfaceServeurForum;
 import rmi.forum.interfaces.InterfaceSujetDiscussion;
 
-public class ServeurForum implements InterfaceServeurForum {
+public class ServeurForum extends UnicastRemoteObject implements InterfaceServeurForum ,Serializable  {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -44,10 +48,9 @@ public class ServeurForum implements InterfaceServeurForum {
 	
 		try {
 			
-			ServeurForum pierre = new ServeurForum();
-			InterfaceServeurForum stu = (InterfaceServeurForum) UnicastRemoteObject.exportObject(pierre, 0);
-			Registry registry = java.rmi.registry.LocateRegistry.createRegistry(5000);
-			registry.rebind("cyrille", stu);
+			ServeurForum serveur = new ServeurForum();
+			Registry registry = LocateRegistry.createRegistry(5000);
+			registry.rebind("serveur", serveur);
 			System.out.println("#Initialisation du site serveur et enregistrement de son adresse externe.");
 			
 			}

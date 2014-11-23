@@ -1,15 +1,15 @@
 package rmi.forum.views;
 
+import java.awt.BorderLayout;
 import java.awt.HeadlessException;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -19,38 +19,43 @@ import rmi.forum.interfaces.InterfaceSujetDiscussion;
 public class FenetreDiscussionClient extends JFrame implements InterfaceAffichageClient{
 
 	/**
-	 * 
-	 */
+	 * 	private JTextArea Afficheur;
+	 * JTextField input;
+	*/
 	private static final long serialVersionUID = 1L;
 	private InterfaceSujetDiscussion sujetDiscussion;
-	private JTextArea Afficheur;
-	JTextField input;
-	public FenetreDiscussionClient(String title) throws HeadlessException {
-		super();
-		JFrame maFenetre1 = new JFrame();
-		JPanel maPanel = new JPanel();
-		JScrollBar scrollBar = new JScrollBar(JScrollBar.HORIZONTAL);
+	JPanel bigPan = new JPanel();
+	JPanel topPanel = new JPanel();
+	JPanel buttomPanel = new JPanel();
+	JButton send = new JButton("Envoi");
+	JTextArea afficheur = new JTextArea(10, 20);;
+	JTextField input = new JTextField();
 	
-		maFenetre1.setTitle(title);
-		maFenetre1.setSize(300, 300);
-		maFenetre1.setResizable(false);			
-		maFenetre1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		maFenetre1.setLocationRelativeTo(null);
+	public FenetreDiscussionClient(String title,InterfaceSujetDiscussion SujetDiscussion ) throws HeadlessException {
+		this.sujetDiscussion = SujetDiscussion;
+		this.setTitle(title);
+		this.setSize(400, 300);
+		this.add(bigPan);
+		init();
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+private void init(){
 		
-	    input= new JTextField("taper votre message",25);
-		JTextArea Afficheur=new JTextArea(5, 20) ;
-		Afficheur.setEditable(false);
-		BoundedRangeModel brm = input.getHorizontalVisibility();
-		scrollBar.setModel(brm);
+		BorderLayout topLayout = new BorderLayout();
+		topPanel.setLayout(topLayout);
+		topPanel.add("Center", afficheur);
 		
-		JButton send = new JButton("Send");//The JButton name.
-	
-		maPanel.add(Afficheur);
-		maPanel.add(input);
-		maPanel.add(scrollBar);
-		maPanel.add(send);
-		maFenetre1.add(maPanel);
-	
+		BorderLayout buttomLayout = new BorderLayout();
+		buttomPanel.setLayout(buttomLayout);
+		buttomPanel.add("North", input);
+		buttomPanel.add("South", send);
+		
+		BorderLayout bigLayout = new BorderLayout();
+		bigPan.setLayout(bigLayout);
+		bigPan.add("North", topPanel);
+		bigPan.add("South", buttomPanel);
+		afficheur.setEditable(true);
 		send.addActionListener(new action());
 		
 	}
@@ -58,8 +63,7 @@ public class FenetreDiscussionClient extends JFrame implements InterfaceAffichag
 	class action implements ActionListener
 	{
 		String message;
-		public action()
-		{
+		public action(){
 			
 		}
 		@Override
@@ -68,17 +72,21 @@ public class FenetreDiscussionClient extends JFrame implements InterfaceAffichag
 			message=input.getText();
 			try {
 				sujetDiscussion.diffuse(message);
+				input.setText("");
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("bad");
 			}	
 	}
 	
 	}
-
 	@Override
 	public void affiche(String message) throws RemoteException {
-		// TODO Auto-generated method stub
-		Afficheur.setText(message);
+		try{
+			afficheur.setText(message);
+			System.out.println("message setter avec succes "+message);
+		}catch(Exception e){
+			System.out.println("erreur affichage console textarea");
+		}
 	}
 }
