@@ -9,6 +9,7 @@ import java.rmi.registry.Registry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import rmi.forum.interfaces.InterfaceServeurForum;
@@ -26,6 +27,7 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 	private boolean abonne = false;
 	FenetreDiscussionClient f ;
 	static InterfaceServeurForum serverforum;
+	String nickName;
 
 	/**
 	 * @throws HeadlessException
@@ -34,22 +36,18 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 		super();
 		setTitle("FenetreSujetClient ");
 		setSize(400, 300);
-
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-
 		JButton Button1 = new JButton("Sport");// The JButton name.
 		maPanel.add(Button1);
 		JButton Button2 = new JButton("Musique");// The JButton name.
 		maPanel.add(Button2);
 		JButton Button3 = new JButton("Cinema");// The JButton name.
 		maPanel.add(Button3);
-
 		Button1.addActionListener(new action("Sport"));
 		Button2.addActionListener(new action("Musique"));
 		Button3.addActionListener(new action("Cinema"));
-
 	}
 
 	class action implements ActionListener {
@@ -63,7 +61,9 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 
 		@Override
 		public void actionPerformed(ActionEvent v) {
-			// TODO Auto-generated method stub
+			nickName = JOptionPane.showInputDialog("Please enter a nickname");
+			System.out.println("Pseudo :"+nickName);
+			
 			
 			try {
 				if (estAbonner(v.getActionCommand())){
@@ -72,22 +72,20 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 				else
 					System.out.println("je suis plus abonnee a ce sujet");
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 	}
 
-	@Override
 	public boolean estAbonner(String c) throws RemoteException {
 		// TODO Auto-generated method stub
 		String sujet = c;
 		
 		if (abonne == false) {
 			sujetDiscussion = serverforum.obtientSujet(sujet);
-			f = new FenetreDiscussionClient(sujet, sujetDiscussion);
-			f.setVisible(true);
+			f = new FenetreDiscussionClient(sujet,sujetDiscussion, nickName);
+			f.frame.setVisible(true);
 			try{
 				sujetDiscussion.inscription(f);
 			}catch(Exception e){
@@ -102,7 +100,7 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 			}catch(Exception e){
 				System.out.println("Erreur");
 			}
-			f.setVisible(false);
+			f.frame.setVisible(false);
 			// fermer la fenetre .
 		}
 
@@ -115,7 +113,6 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 		FenetreSujetClient maFenetre2 = new FenetreSujetClient();
 		maFenetre2.add(maPanel);
 		maFenetre2.setVisible(true);
-
 		
 
 		try {

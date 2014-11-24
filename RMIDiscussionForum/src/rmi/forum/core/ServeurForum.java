@@ -32,7 +32,6 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 		sujet.put(cinema, new SujetDiscussion(cinema));
 		sujet.put(sport, new SujetDiscussion(sport));
 	}
-
 	@Override
 	public InterfaceSujetDiscussion obtientSujet(String titre)
 			throws RemoteException {
@@ -41,11 +40,7 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 		catch (NullPointerException e) {return null;}
 		
 	}
-	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-	
 		try {
 			
 			ServeurForum serveur = new ServeurForum();
@@ -57,7 +52,6 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 			catch(Exception e) {
 				e.printStackTrace();
 				System.out.println("!L'initialisation du site serveur et l'enregistrement de son adresse externe ont échoué.");}
-		
 	}
 
 

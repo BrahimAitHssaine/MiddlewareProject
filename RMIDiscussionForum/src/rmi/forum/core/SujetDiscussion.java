@@ -8,6 +8,7 @@ import java.util.List;
 
 import rmi.forum.interfaces.InterfaceAffichageClient;
 import rmi.forum.interfaces.InterfaceSujetDiscussion;
+import rmi.forum.views.FenetreDiscussionClient;
 
 public class SujetDiscussion extends UnicastRemoteObject implements Serializable, InterfaceSujetDiscussion {
 
@@ -47,15 +48,16 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 	}
 
 	@Override
-	public synchronized void diffuse(String message) throws RemoteException {
+	public synchronized void diffuse(String nickName, String message) throws RemoteException {
 		// TODO Auto-generated method stub
 		try{
 			for (InterfaceAffichageClient c : client) {
-				c.affiche(message);
+				c.affiche(nickName+": "+message+"\n");
 				System.out.println("diffusion reussi"+" message :"+message);
 			}
 		}catch(Exception e){
 			System.out.println("diffusion echoué");
+			e.printStackTrace();
 		}
 		
 	}
