@@ -24,8 +24,7 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 	}
 
 	@Override
-	public synchronized void inscription(InterfaceAffichageClient c)
-			throws RemoteException {
+	public synchronized void inscription(InterfaceAffichageClient c) throws RemoteException {
 		// TODO Auto-generated method stub
 		try{
 			this.getClient().add(c);
@@ -41,7 +40,7 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 		// TODO Auto-generated method stub
 		try{
 			this.getClient().remove(c);
-			System.out.println("Desinscription ok");
+			System.out.println("Desinscription ok du client "+getClient().contains(c));
 		}catch(Exception e){
 			System.out.println("Desinscription echec");
 		}

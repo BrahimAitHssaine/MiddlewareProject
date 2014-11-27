@@ -6,7 +6,7 @@ import rmi.forum.interfaces.InterfaceAffichageClient;
 
 public interface InterfaceClient {
 	
-	public boolean estAbonner(String c)
+	public boolean estAbonner(String c, boolean bool)
 			throws RemoteException ;
 	
 

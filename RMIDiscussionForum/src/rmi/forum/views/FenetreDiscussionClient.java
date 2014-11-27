@@ -1,7 +1,11 @@
 package rmi.forum.views;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
@@ -13,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import rmi.forum.interfaces.InterfaceAffichageClient;
 import rmi.forum.interfaces.InterfaceSujetDiscussion;
@@ -29,9 +34,9 @@ public class FenetreDiscussionClient extends UnicastRemoteObject implements Inte
 	JPanel topPanel = new JPanel();
 	JPanel buttomPanel = new JPanel();
 	JButton send = new JButton("Envoi");
-	JTextArea afficheur = new JTextArea(10, 20);
+	JTextArea afficheur = new JTextArea(12, 20);
 	JScrollPane scrollPane = new JScrollPane(afficheur);
-	JTextField input = new JTextField();
+	JTextArea input = new JTextArea(2,20);
 	JFrame frame = new JFrame();
 	String nickName;
 	public FenetreDiscussionClient(String title, InterfaceSujetDiscussion SujetDiscussion, String nickName ) throws RemoteException{
@@ -58,7 +63,6 @@ private void init(){
 		bigPan.setLayout(bigLayout);
 		bigPan.add("North", topPanel);
 		bigPan.add("South", buttomPanel);
-		afficheur.setEditable(true);
 		send.addActionListener(new action());
 		frame.add(bigPan);
 	}
