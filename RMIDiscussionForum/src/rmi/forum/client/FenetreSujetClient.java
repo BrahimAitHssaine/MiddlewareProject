@@ -1,4 +1,4 @@
-package rmi.forum.views;
+package rmi.forum.client;
 
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -15,10 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import rmi.forum.interfaces.InterfaceServeurForum;
-import rmi.forum.interfaces.InterfaceSujetDiscussion;
+import rmi.forum.server.InterfaceServeurForum;
+import rmi.forum.server.InterfaceSujetDiscussion;
 
-public class FenetreSujetClient extends JFrame implements InterfaceClient {
+public class FenetreSujetClient extends JFrame implements InterfaceSujetClient {
 	/**
 	 * 
 	 */
@@ -28,10 +28,10 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 	private boolean sportBool = false;
 	private boolean musiqueBool = false;
 	private boolean cinemaBool = false;
-	FenetreDiscussionClient f ;
+	FenetreTchatClient f ;
 	static InterfaceServeurForum serverforum;
 	String nickName = "";
-	Map<String,FenetreDiscussionClient> mapFenetreClient = new Hashtable<String,FenetreDiscussionClient>();
+	Map<String,FenetreTchatClient> mapFenetreClient = new Hashtable<String,FenetreTchatClient>();
 	/**
 	 * @throws HeadlessException
 	 */
@@ -103,7 +103,7 @@ public class FenetreSujetClient extends JFrame implements InterfaceClient {
 			nickName = JOptionPane.showInputDialog("Please enter a nickname");
 			System.out.println("Pseudo :"+nickName);
 			sujetDiscussion = serverforum.obtientSujet(sujet);
-			f = new FenetreDiscussionClient("Forum "+sujet,sujetDiscussion, nickName);
+			f = new FenetreTchatClient("Forum "+sujet,sujetDiscussion, nickName);
 			f.frame.setVisible(true);
 			mapFenetreClient.put(sujet, f);
 			try{

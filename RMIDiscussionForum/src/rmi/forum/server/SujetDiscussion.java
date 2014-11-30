@@ -1,4 +1,4 @@
-package rmi.forum.core;
+package rmi.forum.server;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -6,9 +6,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 import java.util.List;
 
-import rmi.forum.interfaces.InterfaceAffichageClient;
-import rmi.forum.interfaces.InterfaceSujetDiscussion;
-import rmi.forum.views.FenetreDiscussionClient;
+import rmi.forum.client.FenetreTchatClient;
+import rmi.forum.client.InterfaceTchatClient;
 
 public class SujetDiscussion extends UnicastRemoteObject implements Serializable, InterfaceSujetDiscussion {
 
@@ -16,7 +15,7 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<InterfaceAffichageClient> client = new LinkedList<InterfaceAffichageClient>();
+	private List<InterfaceTchatClient> client = new LinkedList<InterfaceTchatClient>();
 	private String name;
 
 	public SujetDiscussion(String name) throws RemoteException{
@@ -24,7 +23,7 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 	}
 
 	@Override
-	public synchronized void inscription(InterfaceAffichageClient c) throws RemoteException {
+	public synchronized void inscription(InterfaceTchatClient c) throws RemoteException {
 		// TODO Auto-generated method stub
 		try{
 			this.getClient().add(c);
@@ -35,7 +34,7 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 	}
 
 	@Override
-	public synchronized void desInscription(InterfaceAffichageClient c)
+	public synchronized void desInscription(InterfaceTchatClient c)
 			throws RemoteException {
 		// TODO Auto-generated method stub
 		try{
@@ -50,7 +49,7 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 	public synchronized void diffuse(String nickName, String message) throws RemoteException {
 		// TODO Auto-generated method stub
 		try{
-			for (InterfaceAffichageClient c : client) {
+			for (InterfaceTchatClient c : client) {
 				c.affiche(nickName+": "+message+"\n");
 				System.out.println("diffusion reussi"+" message :"+message);
 			}
@@ -61,11 +60,11 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 		
 	}
 
-	public List<InterfaceAffichageClient> getClient() {
+	public List<InterfaceTchatClient> getClient() {
 		return client;
 	}
 
-	public void setClient(List<InterfaceAffichageClient> client) {
+	public void setClient(List<InterfaceTchatClient> client) {
 		this.client = client;
 	}
 
