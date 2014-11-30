@@ -1,11 +1,6 @@
 package rmi.forum.client;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.HeadlessException;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
@@ -16,8 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
+import javax.swing.ScrollPaneConstants;
 
 import rmi.forum.server.InterfaceSujetDiscussion;
 
@@ -56,7 +50,7 @@ public class FenetreTchatClient extends UnicastRemoteObject implements
 		buttomPanel.setLayout(buttomLayout);
 		buttomPanel.add("North", input);
 		buttomPanel.add("South", send);
-		scrollPane.setHorizontalScrollBarPolicy(scrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		BorderLayout bigLayout = new BorderLayout();
 		bigPan.setLayout(bigLayout);
 		bigPan.add("North", topPanel);

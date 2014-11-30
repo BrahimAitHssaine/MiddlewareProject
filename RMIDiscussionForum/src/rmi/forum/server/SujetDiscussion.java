@@ -5,8 +5,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
 import java.util.List;
-
-import rmi.forum.client.FenetreTchatClient;
 import rmi.forum.client.InterfaceTchatClient;
 
 public class SujetDiscussion extends UnicastRemoteObject implements Serializable, InterfaceSujetDiscussion {

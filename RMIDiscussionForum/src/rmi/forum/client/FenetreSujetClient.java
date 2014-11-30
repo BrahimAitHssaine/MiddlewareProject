@@ -8,13 +8,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import rmi.forum.server.InterfaceServeurForum;
 import rmi.forum.server.InterfaceSujetDiscussion;
 
