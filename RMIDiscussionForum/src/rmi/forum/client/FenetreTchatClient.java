@@ -3,6 +3,8 @@ package rmi.forum.client;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -49,6 +51,33 @@ public class FenetreTchatClient extends UnicastRemoteObject implements
 		BorderLayout buttomLayout = new BorderLayout();
 		buttomPanel.setLayout(buttomLayout);
 		buttomPanel.add("North", input);
+		input.addKeyListener(new KeyListener() {
+			String mess;
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER){
+					e.consume();
+					mess = input.getText();
+					try {
+						sujetDiscussion.diffuse(nickName, mess);
+						input.setText("");
+					} catch (RemoteException ex) {
+						ex.printStackTrace();
+					}
+					
+				}
+			}
+		});
 		buttomPanel.add("South", send);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		BorderLayout bigLayout = new BorderLayout();
