@@ -22,10 +22,9 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 
 	@Override
 	public synchronized void inscription(InterfaceTchatClient c) throws RemoteException {
-		// TODO Auto-generated method stub
 		try{
-			this.getClient().add(c);
-			System.out.println("Inscription ok");
+				this.getClient().add(c);
+				System.out.println("Inscription ok");
 		}catch(Exception e){
 			System.out.println("Inscription echec");
 		}
@@ -34,19 +33,21 @@ public class SujetDiscussion extends UnicastRemoteObject implements Serializable
 	@Override
 	public synchronized void desInscription(InterfaceTchatClient c)
 			throws RemoteException {
-		// TODO Auto-generated method stub
 		try{
+			if(c != null){
 			this.getClient().remove(c);
-			System.out.println("Desinscription ok du client "+getClient().contains(c));
+			System.out.println("Desinscription ok du client "+getClientHost());
+			}else{ System.out.println("probleeeeeem");}
 		}catch(Exception e){
+			e.printStackTrace();
 			System.out.println("Desinscription echec");
 		}
 	}
 
 	@Override
 	public synchronized void diffuse(String nickName, String message) throws RemoteException {
-		// TODO Auto-generated method stub
 		try{
+			
 			for (InterfaceTchatClient c : client) {
 				c.affiche(nickName+": "+message+"\n");
 				System.out.println("diffusion reussi"+" message :"+message);

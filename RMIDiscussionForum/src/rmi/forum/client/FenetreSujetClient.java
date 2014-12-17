@@ -6,128 +6,105 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import rmi.forum.client.FenetreTchatClient;
 import rmi.forum.server.InterfaceServeurForum;
 import rmi.forum.server.InterfaceSujetDiscussion;
+import rmi.forum.utils.Sujet;
 
-public class FenetreSujetClient extends JFrame implements InterfaceSujetClient {
+public class FenetreSujetClient  extends JFrame {
+
 	/**
-	 * 
+	 * @param
 	 */
 	private static final long serialVersionUID = 1L;
 	private static JPanel maPanel = new JPanel();
-	private InterfaceSujetDiscussion sujetDiscussion;
-	private boolean sportBool = false;
-	private boolean musiqueBool = false;
-	private boolean cinemaBool = false;
-	FenetreTchatClient f ;
-	static InterfaceServeurForum serverforum;
 	String nickName = "";
-	Map<String,FenetreTchatClient> mapFenetreClient = new Hashtable<String,FenetreTchatClient>();
-	/**
-	 * @throws HeadlessException
-	 */
+	Map<String,Sujet> sujetForum = new HashMap<String,Sujet>();
+	static InterfaceServeurForum serverforum;
+	
 	public FenetreSujetClient() throws HeadlessException {
-		super();
-		setTitle("FenetreSujetClient ");
+		this.setName("Sujets Forum ");
 		setSize(400, 300);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+		setResizable(false);
 		init();
 	}
-	
-	private void init(){
-		JButton Button1 = new JButton("Sport");// The JButton name.
+
+	public void init(){
+		JButton Button1 = new JButton("Sport");
 		maPanel.add(Button1);
-		JButton Button2 = new JButton("Musique");// The JButton name.
+		JButton Button2 = new JButton("Musique");
 		maPanel.add(Button2);
-		JButton Button3 = new JButton("Cinema");// The JButton name.
+		JButton Button3 = new JButton("Cinema");
 		maPanel.add(Button3);
 		Button1.addActionListener(new action("Sport"));
 		Button2.addActionListener(new action("Musique"));
 		Button3.addActionListener(new action("Cinema"));
 	}
-
-	/**
-	 * @author Cyrille
-	 *
-	 */
 	class action implements ActionListener {
-
-		String sujet ;
-
-		public action(String s) {
-			sujet = s;
-			System.out.println("je suis le sujet " + sujet);
+		String su;
+		public action(String s){
+			su = s;
 		}
-
 		@Override
 		public void actionPerformed(ActionEvent v) {
-			switch(v.getActionCommand()){
-			case "Sport" : try {
-								sportBool = estAbonner(v.getActionCommand(), sportBool);
-							} catch (RemoteException e) {
-									e.printStackTrace();
-							  }
-							break;
-			case "Musique" : try {
-								musiqueBool = estAbonner(v.getActionCommand(), musiqueBool);
-							 } catch (RemoteException e) {
-								 e.printStackTrace();
-							   }
-							break;
-			case "Cinema" :
-							try {
-								cinemaBool = estAbonner(v.getActionCommand(), cinemaBool);
-							} catch (RemoteException e) {
-								e.printStackTrace();
-							}
-							break;
-			default : System.out.println("Erreur sur récuperation du boolean");
+			try {
+					if(sujetForum.containsKey(v.getActionCommand())){
+						estAbonner(sujetForum.get(v.getActionCommand()));
+					}
+					else{
+						Sujet sujet = new Sujet(v.getActionCommand());
+						sujetForum.put(sujet.getName(), sujet);
+						estAbonner(sujetForum.get(sujet.getName()));
+					}
+			} catch (RemoteException e){
+					e.printStackTrace();
+				}
 			}
-	}
-	}
-	public boolean estAbonner(String c, boolean abonne) throws RemoteException {
-		// TODO Auto-generated method stub
-		String sujet = c;
-		if (abonne == false) {
-			nickName = JOptionPane.showInputDialog("Please enter a nickname");
-			System.out.println("Pseudo :"+nickName);
-			sujetDiscussion = serverforum.obtientSujet(sujet);
-			f = new FenetreTchatClient("Forum "+sujet,sujetDiscussion, nickName);
-			f.frame.setVisible(true);
-			mapFenetreClient.put(sujet, f);
+		}
+	
+	public void estAbonner(Sujet s) throws RemoteException {
+		InterfaceSujetDiscussion sd = null;
+		if (!(s.getIsRegister())) {
+			nickName = JOptionPane.showInputDialog(null, "Please enter a nickname", "Sujet "+s.getName(), JOptionPane.OK_OPTION);
+			sd = serverforum.obtientSujet(s.getName());
+			if(nickName != null){
+			s.setFenetreTchatClient(new FenetreTchatClient("Forum "+s.getName(),sd, nickName));
+			((FenetreTchatClient)s.getFenetreTchatClient()).frame.setVisible(true);
 			try{
-				sujetDiscussion.inscription(f);
-				abonne = true;
+				((FenetreTchatClient)s.getFenetreTchatClient()).sujetDiscussion.inscription(s.getFenetreTchatClient());
+				s.setRegister(true);
 			}catch(Exception e){
-				System.out.println("Erreur");
+				System.out.println("Erreur Inscription");
+			}
 			}
 		} 
 		else {
 			try{
-				sujetDiscussion.desInscription(f);	
-				abonne = false;
-				mapFenetreClient.get(sujet).frame.dispose();
+				((FenetreTchatClient)s.getFenetreTchatClient()).sujetDiscussion.desInscription(s.getFenetreTchatClient());	
+				s.setRegister(false);
+				((FenetreTchatClient)s.getFenetreTchatClient()).frame.dispose();
+				sujetForum.remove(s.getName());
 			}catch(Exception e){
-				System.out.println("Erreur");
+				e.printStackTrace();
+				System.out.println("Erreur Désinscription");
 			}
 		}
-		return abonne;
 	}
 	public static void main(String[] args) {
-		// TODO 1. Instancier une JFrame
-		FenetreSujetClient maFenetre2 = new FenetreSujetClient();
-		maFenetre2.add(maPanel);
-		maFenetre2.setVisible(true);
-		
-
+		FenetreSujetClient client = new FenetreSujetClient();
+		client.add(maPanel);
+		client.setVisible(true);
 		try {
 			String name = "serveur";
 			Registry registry = LocateRegistry.getRegistry(5000);
@@ -137,6 +114,5 @@ public class FenetreSujetClient extends JFrame implements InterfaceSujetClient {
 			System.err.println("Connect Server exception:");
 			e.printStackTrace();
 		}
-
 	}
 }

@@ -8,6 +8,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.omg.CORBA.Current;
+
 public class ServeurForum extends UnicastRemoteObject implements InterfaceServeurForum ,Serializable  {
 
 	/**
@@ -24,7 +26,6 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 	
 	protected ServeurForum() throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
 		sujet.put(musique, new SujetDiscussion(musique));
 		sujet.put(cinema, new SujetDiscussion(cinema));
 		sujet.put(sport, new SujetDiscussion(sport));
@@ -32,7 +33,6 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 	@Override
 	public InterfaceSujetDiscussion obtientSujet(String titre)
 			throws RemoteException {
-		// TODO Auto-generated method stub
 		try{ return sujet.get(titre);}
 		catch (NullPointerException e) {return null;}
 		
@@ -43,12 +43,28 @@ public class ServeurForum extends UnicastRemoteObject implements InterfaceServeu
 			ServeurForum serveur = new ServeurForum();
 			Registry registry = LocateRegistry.createRegistry(5000);
 			registry.rebind("serveur", serveur);
-			System.out.println("#Initialisation du site serveur et enregistrement de son adresse externe.");
 			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					System.out.println(" :> Initialisation du site serveur et enregistrement de son adresse externe. \n");
+					System.out.print("\t");
+					for(int i = 0; i < 30 ; i++){
+						System.out.print("*");
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					System.out.println("\n");
+					System.out.println(" :> Serveur démarré et en attente de connexions");
+				}
+			}, "Initializer").start();
 			}
 			catch(Exception e) {
 				e.printStackTrace();
-				System.out.println("!L'initialisation du site serveur et l'enregistrement de son adresse externe ont Ã©chouÃ©.");}
+				System.out.println(" :< L'initialisation du site serveur et l'enregistrement de son adresse externe à échoué.");}
 	}
 
 
