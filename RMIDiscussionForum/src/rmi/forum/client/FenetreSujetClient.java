@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import rmi.forum.client.FenetreTchatClient;
 import rmi.forum.server.InterfaceServeurForum;
 import rmi.forum.server.InterfaceSujetDiscussion;
-import rmi.forum.utils.Sujet;
 
 public class FenetreSujetClient  extends JFrame {
 

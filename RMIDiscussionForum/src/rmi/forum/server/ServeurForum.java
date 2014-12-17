@@ -8,7 +8,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.omg.CORBA.Current;
 
 public class ServeurForum extends UnicastRemoteObject implements InterfaceServeurForum ,Serializable  {
 

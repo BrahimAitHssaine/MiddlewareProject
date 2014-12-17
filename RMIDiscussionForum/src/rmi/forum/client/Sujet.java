@@ -1,5 +1,4 @@
-package rmi.forum.utils;
-import rmi.forum.client.InterfaceTchatClient;
+package rmi.forum.client;
 
 public class Sujet {
 	private String name;
